@@ -1,21 +1,22 @@
-import { ServerStyleSheets } from "@material-ui/core/styles";
-import { Html, Head, Main, NextScript } from "next/document";
-import React from "react";
+import { ServerStyleSheets } from '@material-ui/core/styles';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+import React from 'react';
 
-export default function Document() {
-  return (
-    <Html lang="en">
-      <Head />
-      <body>
-        <Main />
-        <NextScript />
-      </body>
-    </Html>
-  );
+export default class MyDocument extends Document {
+  render() {
+    return (
+      <Html lang="en">
+        <Head></Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }
 
-// fix material ui server side rendering(SSR)
-Document.getIntialProps = async (ctx) => {
+MyDocument.getInitialProps = async (ctx) => {
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;
   ctx.renderPage = () => {
@@ -23,8 +24,7 @@ Document.getIntialProps = async (ctx) => {
       enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
   };
-
-  const initialProps = await Document.getIntialProps(ctx);
+  const initialProps = await Document.getInitialProps(ctx);
   return {
     ...initialProps,
     styles: [
