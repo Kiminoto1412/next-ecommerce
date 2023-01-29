@@ -17,6 +17,7 @@ export default function Layout({ title,description,children }) {
     <div>
       <Head>
         <title>{title ? `${title} - Next Amazona`:"Next Amazona"}</title>
+        {/* for SEO */}
         {description && <meta name="description" content={description}></meta>}
       </Head>
       <AppBar position="static" className={classes.navbar}>
