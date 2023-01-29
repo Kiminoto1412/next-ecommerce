@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Inter } from "@next/font/google";
 import styles from "@/styles/Home.module.css";
 import Layout from "@/components/Layout";
+import Link from "next/link";
 import {
   Grid,
   CardActionArea,
@@ -26,13 +27,15 @@ export default function Home() {
           {data.products.map((product) => (
             <Grid item md={4} key={product.name}>
               <Card>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    image={product.image}
-                    title={product.name}
-                  ></CardMedia>
-                </CardActionArea>
+                <Link href={`/product/${product.slug}`}>
+                  <CardActionArea>
+                    <CardMedia
+                      component="img"
+                      image={product.image}
+                      title={product.name}
+                    ></CardMedia>
+                  </CardActionArea>
+                </Link>
                 <CardContent>
                   <Typography>{product.name}</Typography>
                 </CardContent>
