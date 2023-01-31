@@ -13,7 +13,8 @@ import {
   Switch,
 } from "@material-ui/core";
 import useStyles from "../utils/styles";
-import { Store } from "@/utils/store";
+import { Store } from "@/utils/Store";
+import Cookies from "js-cookie";
 // import Link from "next/link";
 
 export default function Layout({ title, description, children }) {
@@ -43,10 +44,14 @@ export default function Layout({ title, description, children }) {
     },
   });
   const classes = useStyles();
+  // console.log(darkMode, "darkMode");
 
-  const handleChangeDarkMode = ()=>{
-    dispatch({type:darkMode?"DARK_MODE_OFF":"DARK_MODE_ON"})
-  }
+  const handleChangeDarkMode = () => {
+    dispatch({ type: darkMode ? "DARK_MODE_OFF" : "DARK_MODE_ON" });
+    const newDarkMode = !darkMode;
+    // Cookies have 2 parameters 1.the name 2.value as a string
+    Cookies.set("darkMode", newDarkMode ? "ON" : "OFF");
+  };
   return (
     <div>
       <Head>
@@ -68,7 +73,7 @@ export default function Layout({ title, description, children }) {
             {/* </NextLink> */}
             <div className={classes.grow}></div>
             <div>
-              <Switch checked={darkMode} onChange={handleChangeDarkMode}></Switch>
+              <Switch checked={darkMode} onChange={handleChangeDarkMode} />
               <Link href="/cart">Cart</Link>
               <Link href="/login">Login</Link>
               {/* <NextLink href="/cart" passHref> 

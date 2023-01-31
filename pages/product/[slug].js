@@ -1,5 +1,6 @@
 import Layout from "@/components/Layout";
-import data from "@/utils/data";
+import Product from "@/models/Product";
+import db from "@/utils/db";
 import useStyles from "@/utils/styles";
 import {
   Button,
@@ -11,16 +12,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import Image from "next/image";
-// import Link from "next/link";
-import { useRouter } from "next/router";
 import React from "react";
 
-export default function ProductScreen() {
+export default function ProductScreen(props) {
+  const {product} = props
   const classes = useStyles();
-  const router = useRouter();
   //   get slug from url
-  const { slug } = router.query;
-  const product = data.products.find((a) => a.slug === slug);
+  // const { slug } = router.query;
   if (!product) {
     return <div>Product Not Found</div>;
   }
@@ -96,4 +94,20 @@ export default function ProductScreen() {
       </Grid>
     </Layout>
   );
+}
+
+
+export async function getServerSideProps(context){
+  const {params} =  context
+  const {slug} = params
+
+  await db.connect();
+  // use lean() to convert document to plain javascript
+  const product = await Product.findOne({slug}).lean();
+  await db.disconnect();
+  return {
+    props: {
+      product:db.convertDocToObj(product),
+    },
+  };
 }
